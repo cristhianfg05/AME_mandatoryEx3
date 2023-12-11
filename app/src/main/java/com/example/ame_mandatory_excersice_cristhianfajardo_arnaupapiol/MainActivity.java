@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     Button btEstadoCielo;
     Button btDescription;
     Button btSunriseSunset;
+    Button btAfegir;
+    EditText texto;
     Spinner listaCiudades;
     List<String> ciudades;
     String ciudadEscogida;  //Se guarda en formato City:Country --> Tarragona:ES
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         listaCiudades = findViewById(R.id.CityList);
         btDescription = findViewById(R.id.btDescription);
         btSunriseSunset = findViewById(R.id.btSunsetSunrise);
+        btAfegir = findViewById(R.id.btAfegir);
+        texto = findViewById(R.id.newCity);
 
         ciudades = new ArrayList<>();
 
@@ -98,7 +104,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btAfegir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    String ciudad = texto.getText().toString();
+                    if(comprobarEstructura(ciudad)){
+                        if(ciudad.split(":")[1].length()==2){
+                            if(!ciudades.contains(ciudad)){
+                                ciudades.add(ciudad);
+                                listaCiudades.setAdapter(adapter);
+                                Toast.makeText(getApplicationContext(), "ciudad añadida a la lista", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "ciudad duplicada", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else{
+                            Toast.makeText(getApplicationContext(), "El pais tiene que tener 2 letras en el codigo", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Formato de texto incorrecto", Toast.LENGTH_SHORT).show();
+                    }
+                }catch(Exception e){
+                    Toast.makeText(getApplicationContext(), "Error en el formato", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
     }
+
+    private boolean comprobarEstructura(String ciudad) {
+        boolean encontrado = false;
+        int i = 0;
+        while(i<ciudad.length() && !encontrado){
+            if(ciudad.charAt(i) == ':'){
+                encontrado = true;
+            }
+            i++;
+        }
+        return encontrado;
+    }
+
     private class WheatherDataTask extends AsyncTask<Void, Void, String>{
 
         @Override
