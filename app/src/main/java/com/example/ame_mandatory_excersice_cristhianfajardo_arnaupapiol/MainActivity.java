@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                         if(ciudad.split(":")[1].length()==2){
                             if(!ciudades.contains(ciudad)){
                                 ciudades.add(ciudad);
-                                listaCiudades.setAdapter(adapter);
                                 Toast.makeText(getApplicationContext(), "ciudad añadida a la lista", Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getApplicationContext(), "ciudad duplicada", Toast.LENGTH_SHORT).show();
