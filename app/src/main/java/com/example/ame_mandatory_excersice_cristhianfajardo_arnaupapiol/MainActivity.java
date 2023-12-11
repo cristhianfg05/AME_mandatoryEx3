@@ -135,15 +135,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean comprobarEstructura(String ciudad) {
-        boolean encontrado = false;
-        int i = 0;
-        while(i<ciudad.length() && !encontrado){
+        int contador = 0;
+        for (int i = 0;i<ciudad.length(); i++){
             if(ciudad.charAt(i) == ':'){
-                encontrado = true;
+                contador++;
             }
-            i++;
         }
-        return encontrado;
+        return contador==1;
     }
 
     private class WheatherDataTask extends AsyncTask<Void, Void, String>{
